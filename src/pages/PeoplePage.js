@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 
 import PeopleList from '../components/PeopleList';
 
@@ -11,30 +11,67 @@ export default class PeoplePage extends React.Component {
     super(props);
 
     this.state = {
-      peoples: []
+      peoples: [],
+      loading: false,
     };
   }
 
   componentDidMount() {
+    this.setState({ loading: true });
     axios
-      .get('http://randomuser.me/api/?nat=br&results=5')
+      .get('http://randomuser.me/api/?nat=br&results=150')
       .then( response => {
         const { results } = response.data;
         this.setState({
-          peoples: results
+          peoples: results,
+          loading: false,
+          error: false,
+        });
+      })
+      .catch(error => {
+        this.state({
+          loading: false,
+          error: true,
         });
       });
   }
 
-  render() {
+  renderPage() {
+    if(this.state.loading)
+      return <ActivityIndicator size='large' color='#6ca2f7' />;
+    
+    if(this.state.error)
+      return <Text style={ styles.error }>Deu ruim :(</Text>;
+    
     return (
-      <View>
-        <PeopleList 
+      <PeopleList 
           peoples={this.state.peoples} 
           onPressItem={pageParams => {
             this.props.navigation.navigate('PeopleDetail', pageParams);
-          }} />
+          }} 
+      />
+    );
+  }
+
+  render() {
+    return (
+      <View style={ styles.container }>
+        { this.renderPage() }
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  error: {
+    color: 'red',
+    fontSize: 18,
+
+    textAlign: 'center',
+    flex: 1,
+  },
+});

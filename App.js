@@ -6,6 +6,7 @@ import PeopleDetailPage from './src/pages/PeopleDetailPage';
 import { StringUtils } from './src/util';
 
 export default createStackNavigator ({
+  
   Main: {
     screen: PeoplePage
   },
