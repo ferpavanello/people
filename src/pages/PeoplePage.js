@@ -13,6 +13,7 @@ export default class PeoplePage extends React.Component {
     this.state = {
       peoples: [],
       loading: false,
+      error: false,
     };
   }
 
@@ -25,11 +26,10 @@ export default class PeoplePage extends React.Component {
         this.setState({
           peoples: results,
           loading: false,
-          error: false,
         });
       })
       .catch(error => {
-        this.state({
+        this.setState({
           loading: false,
           error: true,
         });
