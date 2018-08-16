@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 
-import PeopleList from "../components/PeopleList";
+import PeopleList from "./PeopleList";
 
 import axios from "axios";
 
